@@ -1,0 +1,21 @@
+name: Test Auto Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  actualizar-vps:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Conectar por SSH y hacer git pull
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            cd /home/ubuntu/prueba-ci
+            git pull origin main
+            echo "Despliegue completado con éxito"
